@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI/UX Design — Hedy's Portfolio</title>
+  <link rel="icon" type="image/png" href="Images/favicon.png">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f1efea;
+      color: #363636;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── BACKGROUND BLOBS (page-wide) ── */
+    .bg-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(20px);
+    }
+    .blob-green {
+      width: 720px; height: 720px;
+      left: -180px; top: -120px;
+      background: radial-gradient(circle, rgba(168, 213, 140, 0.45) 0%, transparent 65%);
+      animation: drift-green 22s ease-in-out infinite;
+    }
+    .blob-peach {
+      width: 620px; height: 620px;
+      right: -120px; top: 8vh;
+      background: radial-gradient(circle, rgba(255, 195, 165, 0.4) 0%, transparent 65%);
+      animation: drift-peach 26s ease-in-out infinite;
+    }
+
+    @keyframes drift-green {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.06); }
+    }
+    @keyframes drift-peach {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-40px, 50px) scale(1.08); }
+    }
+
+    /* ── NAV ── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 22px 24px;
+      background: rgba(241, 239, 234, 0);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    }
+    nav.top.scrolled {
+      background: rgba(241, 239, 234, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    nav.top a {
+      font-weight: 600;
+      font-size: 17px;
+      color: #363636;
+      transition: opacity 0.2s;
+    }
+    nav.top a:hover { opacity: 0.55; }
+    nav.top a.active { opacity: 0.45; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      position: relative;
+      padding: 120px 64px 30px;
+      z-index: 1;
+    }
+    .header-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #88857f;
+      letter-spacing: 0.02em;
+    }
+    .crumbs a:hover { color: #363636; }
+    .crumbs .sep { opacity: 0.5; }
+    .crumbs .here { color: #363636; }
+
+    /* ── LAYOUT ── */
+    .layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 20px 64px 120px;
+      align-items: start;
+    }
+
+    /* ── LEFT SIDE NAV ── */
+    .side {
+      position: sticky;
+      top: 96px;
+      align-self: start;
+    }
+    .side-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #88857f;
+      margin-bottom: 22px;
+    }
+    .side-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid rgba(54,54,54,0.18);
+    }
+    .side-item {
+      display: grid;
+      grid-template-columns: 32px 1fr 18px;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(54,54,54,0.18);
+      font-weight: 600;
+      font-size: 16px;
+      color: #363636;
+      transition: transform 0.25s ease, padding-left 0.25s ease;
+    }
+    .side-item:hover { transform: translateX(4px); }
+    .side-item .idx {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #A0B297;
+      letter-spacing: 0.05em;
+      transition: color 0.25s ease;
+    }
+    .side-item .arrow {
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      font-size: 14px;
+      color: #363636;
+    }
+    .side-item.active {
+      padding-left: 8px;
+      pointer-events: none;
+    }
+    .side-item.active .idx { color: #363636; }
+    .side-item.active .name { font-weight: 700; }
+    .side-item.active .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Sub-section quick jump (under main list) */
+    .side-sub {
+      margin-top: 32px;
+    }
+    .side-sub-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #A0B297;
+      margin-bottom: 14px;
+    }
+    .side-sub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .side-sub-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #88857f;
+      padding: 6px 0 6px 0;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .side-sub-item::before {
+      content: '';
+      width: 6px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+      transition: width 0.25s ease;
+    }
+    .side-sub-item:hover {
+      color: #363636;
+      padding-left: 4px;
+    }
+    .side-sub-item.active {
+      color: #363636;
+      font-weight: 600;
+    }
+    .side-sub-item.active::before {
+      width: 16px;
+      opacity: 1;
+    }
+
+    .side-foot {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .side-foot a {
+      font-size: 13px;
+      color: #88857f;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .side-foot a:hover { color: #363636; gap: 12px; }
+
+    /* ── RIGHT MAIN ── */
+    .main { min-width: 0; }
+
+    /* Page-level title (current category) */
+    .cat-hero {
+      margin-bottom: 60px;
+    }
+    .cat-hero .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #A0B297;
+      margin-bottom: 14px;
+    }
+    .cat-hero h1 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: 85px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      background: linear-gradient(64.94deg, #111011 8.82%, rgba(17,16,17,0.55) 97.41%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 22px;
+    }
+    .cat-hero p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #5c5a55;
+      max-width: 640px;
+      text-wrap: pretty;
+    }
+
+    /* Sub-section */
+    .sub-section {
+      margin-bottom: 80px;
+      scroll-margin-top: 96px;
+    }
+    .sub-section:last-child { margin-bottom: 0; }
+    .sub-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 26px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(54,54,54,0.18);
+    }
+    .sub-head-left {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .sub-title {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(22px, 2.6vw, 32px);
+      font-weight: 600;
+      line-height: 1.15;
+      color: #1a1a1b;
+      letter-spacing: -0.005em;
+    }
+    .sub-count {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #88857f;
+    }
+    .sub-desc {
+      font-size: 14px;
+      color: #88857f;
+      max-width: 380px;
+      text-align: right;
+      line-height: 1.55;
+    }
+
+    /* Works grid (3 cols) */
+    .works {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .work {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #e7e5dc;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .work:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 44px -18px rgba(54,54,54,0.32);
+    }
+    .work-img {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background:
+        repeating-linear-gradient(135deg,
+          rgba(54,54,54,0.04) 0 12px,
+          rgba(54,54,54,0.08) 12px 24px);
+    }
+    .work-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .work:hover .work-img img { transform: scale(1.045); }
+    .work-img.placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .work-img.placeholder span {
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      font-size: 11px;
+      color: rgba(54,54,54,0.45);
+      letter-spacing: 0.06em;
+      padding: 6px 12px;
+      background: rgba(241,239,234,0.7);
+      border-radius: 6px;
+    }
+
+    .work-arrow {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(-4px);
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 2;
+    }
+    .work:hover .work-arrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .work-arrow svg { width: 14px; height: 14px; }
+
+    .work-body {
+      padding: 16px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .work-title {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #1a1a1b;
+    }
+    .work-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      color: #88857f;
+    }
+    .work-meta .dot { opacity: 0.5; }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob-green, .blob-peach, .blob-green-2 { animation: none !important; }
+    }
+
+    /* ── FOOTER CTA ── */
+    .foot {
+      position: relative;
+      z-index: 2;
+      background: #1d1c1d;
+      color: #f1efea;
+      padding: 100px 8%;
+    }
+    .foot-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .foot-inner h2 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .foot-inner h2 em {
+      font-style: normal;
+      color: #A0B297;
+    }
+    .foot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1efea;
+      color: #1d1c1d;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 17px 28px;
+      border-radius: 100px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .foot-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .foot-btn svg { width: 18px; height: 18px; }
+
+    /* ── RWD ── */
+    @media (max-width: 1200px) {
+      .works { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 20px 40px 100px;
+      }
+      .side { position: relative; top: 0; }
+      .page-header { padding: 110px 40px 16px; }
+    }
+    @media (max-width: 760px) {
+      nav.top { gap: 20px; padding: 16px 20px; }
+      nav.top a { font-size: 15px; }
+      .layout { padding: 20px 24px 100px; }
+      .page-header { padding: 110px 24px 16px; }
+      .works { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+      .sub-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .sub-desc { text-align: left; }
+      .sub-section { margin-bottom: 60px; }
+      .foot-inner { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND BLOBS (page-wide) -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-green"></div>
+    <div class="blob blob-peach"></div>
+
+  </div>
+
+  <!-- NAV -->
+  <nav class="top">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#about">About</a>
+    <a href="portfolio-uiux.html" class="active">Work</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="crumbs">
+        <a href="index.html">Home</a>
+        <span class="sep">/</span>
+        <span class="here">UI/UX Design</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+
+    <!-- LEFT SIDE NAV -->
+    <aside class="side">
+      <div class="side-list">
+        <a class="side-item active" href="portfolio-uiux.html">
+          <span class="idx">01</span>
+          <span class="name">UI/UX Design</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="side-item" href="portfolio-brand.html">
+          <span class="idx">02</span>
+          <span class="name">Brand Identity</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="side-item" href="portfolio-graphic.html">
+          <span class="idx">03</span>
+          <span class="name">Graphic Design</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="side-item" href="portfolio-3d.html">
+          <span class="idx">04</span>
+          <span class="name">3D Visual</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="side-item" href="portfolio-character.html">
+          <span class="idx">05</span>
+          <span class="name">Character Design</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN -->
+    <main class="main">
+
+      <!-- Category hero -->
+      <div class="cat-hero reveal">
+        <h1>UI/UX Design</h1>
+      </div>
+
+      <!-- App UI Design -->
+      <section class="sub-section" id="app">
+        <div class="sub-head reveal">
+          <div class="sub-head-left">
+            <h2 class="sub-title">App UI Design</h2>
+            <span class="sub-count">04 Projects</span>
+          </div>
+          <p class="sub-desc">原生 App 介面與互動設計，從資訊架構到視覺呈現。</p>
+        </div>
+        <div class="works">
+          <div class="work reveal">
+            <div class="work-img"><img src="Images/Frame 2608629.webp" alt="MixerBox OnePlay"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">MixerBox OnePlay</h3>
+              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2023</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img"><img src="Images/Frame 2608631.webp" alt="MixerBox Stream"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">MixerBox Stream</h3>
+              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2023</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img"><img src="Images/Frame 2608634.webp" alt="App UI 03"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">App UI Project</h3>
+              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2024</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img placeholder"><span>// App UI — 800 × 600</span></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">作品名稱</h3>
+              <div class="work-meta"><span>Client</span><span class="dot">•</span><span>2024</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Web Design -->
+      <section class="sub-section" id="web">
+        <div class="sub-head reveal">
+          <div class="sub-head-left">
+            <h2 class="sub-title">Web Design</h2>
+            <span class="sub-count">03 Projects</span>
+          </div>
+          <p class="sub-desc">官網、活動頁、報名系統等網頁端介面與流程設計。</p>
+        </div>
+        <div class="works">
+          <div class="work reveal">
+            <div class="work-img"><img src="作品區/01-3. 首頁.webp" alt="季打報名 首頁"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">季打報名 — 首頁</h3>
+              <div class="work-meta"><span>BAPLCP</span><span class="dot">•</span><span>2024</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img"><img src="作品區/01-2. 季打報名.webp" alt="季打報名 報名流程"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">季打報名系統</h3>
+              <div class="work-meta"><span>BAPLCP</span><span class="dot">•</span><span>2024</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img placeholder"><span>// Web — 800 × 600</span></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">Landing Page</h3>
+              <div class="work-meta"><span>Client</span><span class="dot">•</span><span>2023</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Design System -->
+      <section class="sub-section" id="ds">
+        <div class="sub-head reveal">
+          <div class="sub-head-left">
+            <h2 class="sub-title">Design System</h2>
+            <span class="sub-count">02 Projects</span>
+          </div>
+          <p class="sub-desc">建立可重複使用的元件庫與設計語言。</p>
+        </div>
+        <div class="works">
+          <div class="work reveal">
+            <div class="work-img placeholder"><span>// Design Tokens — 800 × 600</span></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">MixerBox Design Tokens</h3>
+              <div class="work-meta"><span>Internal</span><span class="dot">•</span><span>2024</span></div>
+            </div>
+          </div>
+          <div class="work reveal">
+            <div class="work-img placeholder"><span>// Component Library — 800 × 600</span></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">Component Library</h3>
+              <div class="work-meta"><span>Internal</span><span class="dot">•</span><span>2025</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER CTA -->
+  <footer class="foot">
+    <div class="foot-inner">
+      <h2>有合作想法？<br>讓我們<em>聊聊</em>。</h2>
+      <a class="foot-btn" href="/cdn-cgi/l/email-protection#85ede0e9e9eac5e0fde4e8f5e9e0abe6eae8">
+        Get in touch
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ── In-page scroll-spy (sub-sections) ──
+    const subSections = document.querySelectorAll('.sub-section');
+    const subItems = document.querySelectorAll('.side-sub-item');
+    const subMap = {};
+    subItems.forEach(item => { subMap[item.dataset.target] = item; });
+
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          subItems.forEach(i => i.classList.remove('active'));
+          if (subMap[id]) subMap[id].classList.add('active');
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -65% 0px',
+      threshold: 0
+    });
+    subSections.forEach(s => spyObserver.observe(s));
+
+    // ── Reveal on scroll ──
+    const revObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revObserver.observe(el));
+
+    // ── Nav background fade on scroll ──
+    const navEl = document.querySelector('nav.top');
+    const onScroll = () => {
+      navEl.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>
