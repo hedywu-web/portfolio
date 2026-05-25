@@ -784,6 +784,35 @@
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ── Scroll-spy: main category side-items ──
+    const sideItems = document.querySelectorAll('.side-item');
+    const catSections = ['uiux', 'graphic', '3d', 'character'];
+
+    function setActiveSideItem(id) {
+      sideItems.forEach(item => {
+        const isActive = item.getAttribute('href') === '#' + id;
+        item.classList.toggle('active', isActive);
+        item.style.pointerEvents = isActive ? 'none' : '';
+      });
+    }
+
+    // Track which cat-hero sections have been passed
+    const catObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSideItem(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: '-10% 0px -60% 0px',
+      threshold: 0
+    });
+
+    catSections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) catObserver.observe(el);
+    });
+
     // ── In-page scroll-spy (sub-sections) ──
     const subSections = document.querySelectorAll('.sub-section');
     const subItems = document.querySelectorAll('.side-sub-item');
