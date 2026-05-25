@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UI/UX Design — Hedy's Portfolio</title>
+  <title>Work — Hedy's Portfolio</title>
   <link rel="icon" type="image/png" href="Images/favicon.png">
   <link rel="preconnect" href="https://api.fontshare.com">
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
@@ -355,9 +355,28 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .work-img.loaded img { opacity: 1; }
     .work:hover .work-img img { transform: scale(1.045); }
+    @keyframes skeleton-shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    .work-img:not(.placeholder):not(.loaded)::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        rgba(248,246,241,0) 0%,
+        rgba(248,246,241,0.85) 50%,
+        rgba(248,246,241,0) 100%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
     .work-img.placeholder {
       display: flex;
       align-items: center;
@@ -413,6 +432,14 @@
       color: #88857f;
     }
     .work-meta .dot { opacity: 0.5; }
+
+    /* ── VIDEO WORK ITEM ── */
+    .work-img video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
     /* ── REVEAL ── */
     .reveal {
@@ -519,7 +546,7 @@
       <div class="crumbs">
         <a href="index.html">Home</a>
         <span class="sep">/</span>
-        <span class="here">UI/UX Design</span>
+        <span class="here">Work</span>
       </div>
     </div>
   </header>
@@ -530,27 +557,27 @@
     <!-- LEFT SIDE NAV -->
     <aside class="side">
       <div class="side-list">
-        <a class="side-item active" href="portfolio-uiux.html">
+        <a class="side-item active" href="#uiux">
           <span class="idx">01</span>
           <span class="name">UI/UX Design</span>
           <span class="arrow">→</span>
         </a>
-        <a class="side-item" href="portfolio-brand.html">
+        <a class="side-item" href="#brand">
           <span class="idx">02</span>
           <span class="name">Brand Identity</span>
           <span class="arrow">→</span>
         </a>
-        <a class="side-item" href="portfolio-graphic.html">
+        <a class="side-item" href="#graphic">
           <span class="idx">03</span>
           <span class="name">Graphic Design</span>
           <span class="arrow">→</span>
         </a>
-        <a class="side-item" href="portfolio-3d.html">
+        <a class="side-item" href="#3d">
           <span class="idx">04</span>
           <span class="name">3D Visual</span>
           <span class="arrow">→</span>
         </a>
-        <a class="side-item" href="portfolio-character.html">
+        <a class="side-item" href="#character">
           <span class="idx">05</span>
           <span class="name">Character Design</span>
           <span class="arrow">→</span>
@@ -562,7 +589,7 @@
     <main class="main">
 
       <!-- Category hero -->
-      <div class="cat-hero reveal">
+      <div class="cat-hero reveal" id="uiux">
         <h1>UI/UX Design</h1>
       </div>
 
@@ -571,13 +598,13 @@
         <div class="sub-head reveal">
           <div class="sub-head-left">
             <h2 class="sub-title">App UI Design</h2>
-            <span class="sub-count">04 Projects</span>
+            <span class="sub-count">02 Projects</span>
           </div>
           <p class="sub-desc">原生 App 介面與互動設計，從資訊架構到視覺呈現。</p>
         </div>
         <div class="works">
           <div class="work reveal">
-            <div class="work-img"><img src="Images/ChatGPT Image 2026年5月22日 17_18_34.png" alt="排球報名系統"></div>
+            <div class="work-img"><img src="Images/ChatGPT Image 2026年5月22日 17_18_34.webp" alt="排球報名系統"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">排球報名系統</h3>
@@ -585,27 +612,11 @@
             </div>
           </div>
           <div class="work reveal">
-            <div class="work-img"><video autoplay muted loop playsinline poster="Images/Frame 2608631.webp" data-src="Images/ui-motion.mp4" class="lazy-video" style="width:100%;height:100%;object-fit:cover;display:block;"></video></div>
+            <div class="work-img"><img src="Images/mb-ai-note-thumbnail.webp" alt="AI 筆記神器"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
-              <h3 class="work-title">MixerBox Stream</h3>
-              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2023</span></div>
-            </div>
-          </div>
-          <div class="work reveal">
-            <div class="work-img"><img src="Images/Frame 2608634.webp" alt="App UI 03"></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">App UI Project</h3>
-              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2024</span></div>
-            </div>
-          </div>
-          <div class="work reveal">
-            <div class="work-img placeholder"><span>// App UI — 800 × 600</span></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">作品名稱</h3>
-              <div class="work-meta"><span>Client</span><span class="dot">•</span><span>2024</span></div>
+              <h3 class="work-title">AI 筆記神器</h3>
+              <div class="work-meta"><span>MixerBox</span><span class="dot">•</span><span>2025</span></div>
             </div>
           </div>
         </div>
@@ -616,66 +627,111 @@
         <div class="sub-head reveal">
           <div class="sub-head-left">
             <h2 class="sub-title">Web Design</h2>
-            <span class="sub-count">03 Projects</span>
+            <span class="sub-count">02 Projects</span>
           </div>
           <p class="sub-desc">官網、活動頁、報名系統等網頁端介面與流程設計。</p>
         </div>
         <div class="works">
           <div class="work reveal">
-            <div class="work-img"><img src="作品區/01-3. 首頁.webp" alt="季打報名 首頁"></div>
+            <div class="work-img"><img src="作品區/phoenix-group-asia.webp" alt="Phoenix Group Asia 官網設計"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
-              <h3 class="work-title">季打報名 — 首頁</h3>
-              <div class="work-meta"><span>BAPLCP</span><span class="dot">•</span><span>2024</span></div>
+              <h3 class="work-title">Phoenix Group Asia</h3>
+              <div class="work-meta"><span>Phoenix Group Asia</span><span class="dot">•</span><span>2024</span></div>
             </div>
           </div>
           <div class="work reveal">
-            <div class="work-img"><img src="作品區/01-2. 季打報名.webp" alt="季打報名 報名流程"></div>
+            <div class="work-img"><img src="Images/privago.webp" alt="PrivaGo 官網設計"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
-              <h3 class="work-title">季打報名系統</h3>
-              <div class="work-meta"><span>BAPLCP</span><span class="dot">•</span><span>2024</span></div>
-            </div>
-          </div>
-          <div class="work reveal">
-            <div class="work-img placeholder"><span>// Web — 800 × 600</span></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">Landing Page</h3>
-              <div class="work-meta"><span>Client</span><span class="dot">•</span><span>2023</span></div>
+              <h3 class="work-title">PrivaGo</h3>
+              <div class="work-meta"><span>PrivaGo</span><span class="dot">•</span><span>2024</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Design System -->
-      <section class="sub-section" id="ds">
+      <!-- Brand Identity -->
+      <div class="cat-hero reveal" id="brand" style="margin-top: 80px;">
+        <h1>Brand Identity</h1>
+      </div>
+
+      <section class="sub-section" id="brand-logo">
         <div class="sub-head reveal">
           <div class="sub-head-left">
-            <h2 class="sub-title">Design System</h2>
-            <span class="sub-count">02 Projects</span>
+            <h2 class="sub-title">CIS/Logo 設計</h2>
+            <span class="sub-count">01 Project</span>
           </div>
-          <p class="sub-desc">建立可重複使用的元件庫與設計語言。</p>
         </div>
         <div class="works">
           <div class="work reveal">
-            <div class="work-img placeholder"><span>// Design Tokens — 800 × 600</span></div>
+            <div class="work-img"><img src="Images/manco-12.jpg" alt="Manco 家用衛浴品牌 Logo 設計"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
-              <h3 class="work-title">MixerBox Design Tokens</h3>
-              <div class="work-meta"><span>Internal</span><span class="dot">•</span><span>2024</span></div>
-            </div>
-          </div>
-          <div class="work reveal">
-            <div class="work-img placeholder"><span>// Component Library — 800 × 600</span></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">Component Library</h3>
-              <div class="work-meta"><span>Internal</span><span class="dot">•</span><span>2025</span></div>
+              <h3 class="work-title">Manco</h3>
+              <div class="work-meta"><span class="work-author">家用衛浴品牌</span><span class="dot">•</span><span>2021</span></div>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- Graphic Design -->
+      <div class="cat-hero reveal" id="graphic" style="margin-top: 80px;">
+        <h1>Graphic Design</h1>
+      </div>
+
+      <!-- 3D Visual -->
+      <div class="cat-hero reveal" id="3d" style="margin-top: 80px;">
+        <h1>3D Visual</h1>
+      </div>
+
+      <section class="sub-section" id="3d-character">
+        <div class="sub-head reveal">
+          <div class="sub-head-left">
+            <h2 class="sub-title">角色設計</h2>
+            <span class="sub-count">01 Project</span>
+          </div>
+        </div>
+        <div class="works">
+          <div class="work reveal">
+            <div class="work-img"><img src="作品區/peach-bad-boy-3d.webp" alt="桃子壞壞 3D角色設計"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">桃子壞壞</h3>
+              <div class="work-meta"><span class="work-author">Hedy Wu</span><span class="dot">•</span><span>2018</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D 產品動態 -->
+      <section class="sub-section" id="3d-product">
+        <div class="sub-head reveal">
+          <div class="sub-head-left">
+            <h2 class="sub-title">3D 產品動態</h2>
+            <span class="sub-count">01 Project</span>
+          </div>
+        </div>
+        <div class="works">
+          <div class="work reveal">
+            <div class="work-img loaded">
+              <video class="lazy-video play-on-scroll"
+                     data-src="Images/TimeLock.mp4"
+                     muted loop playsinline>
+              </video>
+            </div>
+            <div class="work-body">
+              <h3 class="work-title">Time Lock</h3>
+              <div class="work-meta"><span class="work-author">Hedy Wu</span><span class="dot">•</span><span>2021</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Character Design -->
+      <div class="cat-hero reveal" id="character" style="margin-top: 80px;">
+        <h1>Character Design</h1>
+      </div>
 
     </main>
   </div>
@@ -723,18 +779,34 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revObserver.observe(el));
 
-    // ── Lazy load videos ──
+    // ── Lazy load + play-on-scroll videos ──
     document.querySelectorAll('video.lazy-video').forEach(video => {
-      const videoObserver = new IntersectionObserver(entries => {
+      let loaded = false;
+
+      const loadObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !loaded) {
+            loaded = true;
             video.src = video.dataset.src;
             video.load();
-            videoObserver.disconnect();
+            loadObserver.disconnect();
           }
         });
       }, { rootMargin: '200px' });
-      videoObserver.observe(video);
+      loadObserver.observe(video);
+
+      if (video.classList.contains('play-on-scroll')) {
+        const playObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, { threshold: 0.3 });
+        playObserver.observe(video);
+      }
     });
 
     // ── Nav background fade on scroll ──
@@ -744,6 +816,18 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  </script>
+  <script>
+    document.querySelectorAll('.work-img:not(.placeholder) img').forEach(img => {
+      const wrap = img.closest('.work-img');
+      const markLoaded = () => wrap.classList.add('loaded');
+      if (img.complete && img.naturalWidth > 0) {
+        markLoaded();
+      } else {
+        img.addEventListener('load', markLoaded);
+        img.addEventListener('error', markLoaded);
+      }
+    });
   </script>
 </body>
 </html>
