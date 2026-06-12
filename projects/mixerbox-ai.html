@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MixerBox AI App — Hedy's Portfolio</title>
+  <link rel="icon" type="image/png" href="../assets/ui/favicon.png">
+  <style>
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f1efea;
+      color: #363636;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── SCROLL PROGRESS ── */
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: #A0B297;
+      z-index: 200;
+      transition: width 0.08s linear;
+    }
+
+    /* ── BACKGROUND BLOBS ── */
+    .bg-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(20px);
+    }
+    .blob-green {
+      width: 720px; height: 720px;
+      left: -180px; top: -120px;
+      background: radial-gradient(circle, rgba(168, 213, 140, 0.45) 0%, transparent 65%);
+      animation: drift-green 22s ease-in-out infinite;
+    }
+    .blob-peach {
+      width: 620px; height: 620px;
+      right: -120px; top: 6vh;
+      background: radial-gradient(circle, rgba(255, 195, 165, 0.4) 0%, transparent 65%);
+      animation: drift-peach 26s ease-in-out infinite;
+    }
+    @keyframes drift-green {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.06); }
+    }
+    @keyframes drift-peach {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-40px, 50px) scale(1.08); }
+    }
+
+    /* ── NAV ── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 22px 24px;
+      background: rgba(241, 239, 234, 0);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    }
+    nav.top.scrolled {
+      background: rgba(241, 239, 234, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    nav.top a {
+      font-weight: 600;
+      font-size: 17px;
+      color: #363636;
+      transition: opacity 0.2s;
+    }
+    nav.top a:hover { opacity: 0.55; }
+    nav.top a.active { opacity: 0.45; }
+
+    /* ── PROJECT HEADER ── */
+    .proj-header {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 82px 300px 8px;
+    }
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #88857f;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .crumbs a { transition: color 0.2s; }
+    .crumbs a:hover { color: #363636; }
+    .crumbs .sep { opacity: 0.5; }
+    .crumbs .here { color: #363636; }
+
+    .proj-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #A0B297;
+      margin-bottom: 16px;
+    }
+    .proj-header h1 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 6vw, 68px);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      background: linear-gradient(64.94deg, #111011 8.82%, rgba(17,16,17,0.55) 97.41%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+    .proj-lede {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #5c5a55;
+      max-width: 620px;
+      text-wrap: pretty;
+      margin-bottom: 36px;
+    }
+
+    /* Meta row */
+    .proj-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 40px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(54,54,54,0.16);
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #A0B297;
+    }
+    .meta-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1b;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 4px 300px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .shot {
+      position: relative;
+      border-radius: 0px;
+      overflow: hidden;
+      background: #e7e5dc;
+      box-shadow: 0 24px 60px -28px rgba(54,54,54,0.32);
+    }
+    .shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Placeholder (replaced by a real upload) */
+    .shot.placeholder {
+      min-height: 1500px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 120px;
+      background:
+        repeating-linear-gradient(135deg,
+          rgba(54,54,54,0.045) 0 14px,
+          rgba(54,54,54,0.085) 14px 28px);
+    }
+    .ph-card {
+      position: sticky;
+      top: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+      padding: 30px 36px;
+      background: rgba(241,239,234,0.82);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 16px;
+      border: 1px dashed rgba(54,54,54,0.28);
+    }
+    .ph-card .ph-icon {
+      width: 40px; height: 40px;
+      color: #A0B297;
+    }
+    .ph-card .ph-title {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: rgba(54,54,54,0.7);
+    }
+    .ph-card .ph-sub {
+      font-size: 13px;
+      color: #88857f;
+      max-width: 260px;
+      line-height: 1.6;
+    }
+
+    /* ── PROJECT FOOTER NAV ── */
+    .proj-foot-nav {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 300px 80px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #363636;
+      padding: 14px 24px;
+      border: 1px solid rgba(54,54,54,0.22);
+      border-radius: 100px;
+      transition: gap 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .back-link:hover {
+      gap: 14px;
+      background: rgba(54,54,54,0.04);
+      border-color: rgba(54,54,54,0.4);
+    }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER CTA ── */
+    .foot {
+      position: relative;
+      z-index: 2;
+      background: #1d1c1d;
+      color: #f1efea;
+      padding: 100px 8%;
+    }
+    .foot-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .foot-inner h2 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .foot-inner h2 em {
+      font-style: normal;
+      color: #A0B297;
+    }
+    .foot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1efea;
+      color: #1d1c1d;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 17px 28px;
+      border-radius: 100px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .foot-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .foot-btn svg { width: 18px; height: 18px; }
+
+    /* ── PROBLEM & SOLUTION SECTION ── */
+    .prob-sol {
+      background: linear-gradient(155deg, #d8e8f5 0%, #e4eef8 55%, #ecf3fb 100%);
+      padding: 56px 64px 64px;
+    }
+    .prob-sol .sec-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .prob-sol .step-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: #22272e;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .prob-sol .sec-label-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #22272e;
+      letter-spacing: 0.02em;
+    }
+    .prob-text {
+      font-size: clamp(17px, 2.2vw, 23px);
+      font-weight: 700;
+      line-height: 1.75;
+      color: #1a2233;
+      margin-bottom: 52px;
+      max-width: 860px;
+    }
+    .prob-sol-cols {
+      display: flex;
+      gap: 48px;
+      align-items: center;
+    }
+    .card-toggle-wrap {
+      flex: 0 0 260px;
+    }
+    .card-toggle {
+      position: relative;
+    }
+    .card-toggle .card-state {
+      border-radius: 20px;
+    }
+    .card-toggle .card-b {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: auto;
+      opacity: 0;
+      animation: show-card-b 5.5s ease-in-out infinite;
+    }
+    @keyframes show-card-b {
+      0%, 42%  { opacity: 0; }
+      50%, 92% { opacity: 1; }
+      100%     { opacity: 0; }
+    }
+    .solution-col { flex: 1; }
+    .sol-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #22272e;
+      margin-bottom: 10px;
+    }
+    .sol-headline {
+      font-size: clamp(15px, 1.6vw, 18px);
+      font-weight: 700;
+      color: #1a5dcf;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .sol-desc {
+      font-size: 14px;
+      line-height: 1.9;
+      color: #3a4558;
+    }
+    @media (max-width: 760px) {
+      .prob-sol { padding: 36px 24px 40px; }
+      .prob-sol-cols { flex-direction: column; gap: 32px; }
+      .card-toggle-wrap { flex: 0 0 auto; width: 100%; max-width: 300px; margin: 0 auto; }
+      .prob-text { margin-bottom: 36px; }
+    }
+
+    /* ── CROSSFADE WRAP ── */
+    .crossfade-wrap { position: relative; }
+    .crossfade-wrap picture { display: block; }
+    .crossfade-wrap .cf-b {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      opacity: 0;
+      animation: show-card-b 5.5s ease-in-out infinite;
+    }
+    .crossfade-wrap .cf-b img { width: 100%; height: auto; display: block; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob-green, .blob-peach { animation: none !important; }
+      .card-toggle .card-b { animation: none !important; }
+      .crossfade-wrap .cf-b { animation: none !important; }
+    }
+
+    /* ── RWD ── */
+    @media (min-width: 1728px) {
+      .proj-header { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .gallery { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .proj-foot-nav { max-width: 1128px; padding-left: 0; padding-right: 0; }
+    }
+    @media (max-width: 1280px) {
+      .proj-header { padding-left: 64px; padding-right: 64px; }
+      .gallery { padding-left: 64px; padding-right: 64px; }
+      .proj-foot-nav { padding-left: 64px; padding-right: 64px; }
+    }
+    @media (max-width: 760px) {
+      nav.top { gap: 20px; padding: 16px 20px; }
+      nav.top a { font-size: 15px; }
+      .proj-header { padding: 110px 22px 20px; }
+      .gallery { padding: 0 0 80px; gap: 18px; }
+      .shot { border-radius: 0px; }
+      .shot.placeholder { min-height: 900px; }
+      .proj-foot-nav { padding: 0 22px 64px; }
+      .foot-inner { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="progress" id="progress"></div>
+
+  <!-- BACKGROUND BLOBS -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-green"></div>
+    <div class="blob blob-peach"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="top">
+    <a href="../index.html#home">Home</a>
+    <a href="../index.html#about">About</a>
+    <a href="../index.html" class="active">Works</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+
+  <!-- PROJECT HEADER -->
+  <header class="proj-header">
+    <div class="crumbs">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="../work.html">Works</a>
+      <span class="sep">/</span>
+      <span class="here">MixerBox AI App</span>
+    </div>
+
+    <h1 style="font-size: 28px; font-weight: 600">MixerBox AI App</h1>
+  </header>
+
+  <!-- GALLERY -->
+  <main class="gallery">
+    <div class="shot" style="display:flex;flex-direction:column;">
+      <picture>
+        <source media="(max-width: 760px)" srcset="../assets/projects/mixerbox-ai/mbai-1-mobile.webp">
+        <img src="../assets/projects/mixerbox-ai/mbai-1.webp" alt="MixerBox AI App 作品介紹 1">
+      </picture>
+      <div class="crossfade-wrap">
+        <picture class="cf-a">
+          <source media="(max-width: 760px)" srcset="../assets/projects/mixerbox-ai/mbai-2-mobile.webp">
+          <img src="../assets/projects/mixerbox-ai/mbai-2.webp" alt="MixerBox AI App 作品介紹 2">
+        </picture>
+        <picture class="cf-b">
+          <source media="(max-width: 760px)" srcset="../assets/projects/mixerbox-ai/mbai-2b-mobile.webp">
+          <img src="../assets/projects/mixerbox-ai/mbai-2b.webp" alt="MixerBox AI App 作品介紹 2b">
+        </picture>
+      </div>
+      <picture>
+        <source media="(max-width: 760px)" srcset="../assets/projects/mixerbox-ai/mbai-3-mobile.webp">
+        <img src="../assets/projects/mixerbox-ai/mbai-3.webp" alt="MixerBox AI App 作品介紹 3">
+      </picture>
+    </div>
+  </main>
+
+  <!-- PROJECT FOOTER NAV -->
+  <div class="proj-foot-nav">
+    <a class="back-link" href="../work.html">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      返回所有作品
+    </a>
+  </div>
+
+  <!-- FOOTER CTA -->
+  <footer class="foot">
+    <div class="foot-inner">
+      <h2>有合作想法？<br>讓我們<em>聊聊</em>。</h2>
+      <a class="foot-btn" href="../index.html#contact">
+        Get in touch
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll progress bar
+    const progress = document.getElementById('progress');
+    const navEl = document.querySelector('nav.top');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+      progress.style.width = pct + '%';
+      navEl.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+<script src="../scripts/contact-modal.js"></script>
+</body>
+</html>

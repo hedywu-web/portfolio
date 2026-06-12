@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Rebo 星際探險隊 — Hedy's Portfolio</title>
+  <link rel="icon" type="image/png" href="../assets/ui/favicon.png">
+  <style>
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f1efea;
+      color: #363636;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── SCROLL PROGRESS ── */
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: #E8A87C;
+      z-index: 200;
+      transition: width 0.08s linear;
+    }
+
+    /* ── BACKGROUND BLOBS ── */
+    .bg-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(20px);
+    }
+    .blob-warm {
+      width: 720px; height: 720px;
+      left: -180px; top: -120px;
+      background: radial-gradient(circle, rgba(255, 195, 140, 0.45) 0%, transparent 65%);
+      animation: drift-warm 22s ease-in-out infinite;
+    }
+    .blob-red {
+      width: 620px; height: 620px;
+      right: -120px; top: 6vh;
+      background: radial-gradient(circle, rgba(220, 130, 100, 0.35) 0%, transparent 65%);
+      animation: drift-red 26s ease-in-out infinite;
+    }
+    @keyframes drift-warm {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.06); }
+    }
+    @keyframes drift-red {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-40px, 50px) scale(1.08); }
+    }
+
+    /* ── NAV ── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 22px 24px;
+      background: rgba(241, 239, 234, 0);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    }
+    nav.top.scrolled {
+      background: rgba(241, 239, 234, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    nav.top a {
+      font-weight: 600;
+      font-size: 17px;
+      color: #363636;
+      transition: opacity 0.2s;
+    }
+    nav.top a:hover { opacity: 0.55; }
+    nav.top a.active { opacity: 0.45; }
+
+    /* ── PROJECT HEADER ── */
+    .proj-header {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 82px 300px 8px;
+    }
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #88857f;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .crumbs a { transition: color 0.2s; }
+    .crumbs a:hover { color: #363636; }
+    .crumbs .sep { opacity: 0.5; }
+    .crumbs .here { color: #363636; }
+
+    .proj-header h1 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 6vw, 68px);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      background: linear-gradient(64.94deg, #111011 8.82%, rgba(17,16,17,0.55) 97.41%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 4px 300px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .shot {
+      position: relative;
+      border-radius: 0px;
+      overflow: hidden;
+      background: #e7e5dc;
+      box-shadow: 0 24px 60px -28px rgba(54,54,54,0.32);
+    }
+    .shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── CAROUSEL ── */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      background: #e7e5dc;
+      box-shadow: 0 24px 60px -28px rgba(54,54,54,0.32);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .carousel-track img {
+      flex-shrink: 0;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(241, 239, 234, 0.88);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, opacity 0.2s;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .carousel-btn:hover { background: rgba(241, 239, 234, 1); }
+    .carousel-btn.prev { left: 16px; }
+    .carousel-btn.next { right: 16px; }
+    .carousel-btn svg { width: 20px; height: 20px; }
+    .carousel-dots {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 7px;
+      z-index: 10;
+    }
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(54,54,54,0.25);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+    }
+    .carousel-dot.active {
+      background: rgba(54,54,54,0.75);
+      transform: scale(1.2);
+    }
+
+    /* ── DESCRIPTION TEXT ── */
+    .proj-desc {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+
+    .desc-intro {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.8;
+      color: #2a2a2a;
+    }
+    .desc-intro em {
+      font-style: normal;
+      color: #E8A87C;
+    }
+
+    .desc-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .desc-block {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .desc-dot {
+      flex-shrink: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #E8A87C;
+      margin-top: 10px;
+    }
+    .desc-block p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #4a4845;
+    }
+    .desc-block p strong {
+      font-weight: 700;
+      color: #2a2a2a;
+    }
+
+    /* ── PROJECT INFO ROW ── */
+    .proj-info {
+      display: flex;
+      gap: 92px;
+      padding-top: 48px;
+    }
+    .info-col { display: flex; flex-direction: column; gap: 6px; }
+    .info-col h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a1b;
+      margin-bottom: 10px;
+    }
+    .info-row {
+      font-size: 14px;
+      color: #5c5a55;
+      line-height: 1.6;
+    }
+    .info-row span {
+      color: #88857f;
+      margin-right: 4px;
+    }
+    .tool-icons {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    /* ── PROJECT FOOTER NAV ── */
+    .proj-foot-nav {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 300px 80px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #363636;
+      padding: 14px 24px;
+      border: 1px solid rgba(54,54,54,0.22);
+      border-radius: 100px;
+      transition: gap 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .back-link:hover {
+      gap: 14px;
+      background: rgba(54,54,54,0.04);
+      border-color: rgba(54,54,54,0.4);
+    }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER CTA ── */
+    .foot {
+      position: relative;
+      z-index: 2;
+      background: #1d1c1d;
+      color: #f1efea;
+      padding: 100px 8%;
+    }
+    .foot-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .foot-inner h2 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .foot-inner h2 em {
+      font-style: normal;
+      color: #E8A87C;
+    }
+    .foot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1efea;
+      color: #1d1c1d;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 17px 28px;
+      border-radius: 100px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .foot-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .foot-btn svg { width: 18px; height: 18px; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      padding: 48px 0 16px;
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #88857f;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob-warm, .blob-red { animation: none !important; }
+      .carousel-track { transition: none !important; }
+    }
+
+    /* ── RWD ── */
+    @media (min-width: 1728px) {
+      .proj-header { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .gallery { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .proj-foot-nav { max-width: 1128px; padding-left: 0; padding-right: 0; }
+    }
+    @media (max-width: 1280px) {
+      .proj-header { padding-left: 64px; padding-right: 64px; }
+      .gallery { padding-left: 64px; padding-right: 64px; }
+      .proj-foot-nav { padding-left: 64px; padding-right: 64px; }
+    }
+    @media (max-width: 760px) {
+      nav.top { gap: 20px; padding: 16px 20px; }
+      nav.top a { font-size: 15px; }
+      .proj-header { padding: 110px 22px 20px; }
+      .gallery { padding: 0 0 80px; gap: 0; }
+      .shot { border-radius: 0px; }
+      .proj-desc { padding: 28px 24px; }
+      .proj-foot-nav { padding: 0 22px 64px; }
+      .foot-inner { justify-content: center; text-align: center; }
+      .carousel-btn { width: 36px; height: 36px; }
+      .proj-info { margin-top: 40px; padding: 0 16px; flex-wrap: wrap; gap: 32px 48px; }
+      .proj-info .info-col:last-child { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="progress" id="progress"></div>
+
+  <!-- BACKGROUND BLOBS -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-warm"></div>
+    <div class="blob blob-red"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="top">
+    <a href="../index.html#home">Home</a>
+    <a href="../index.html#about">About</a>
+    <a href="../work.html" class="active">Works</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+
+  <!-- PROJECT HEADER -->
+  <header class="proj-header">
+    <div class="crumbs">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="../work.html">Works</a>
+      <span class="sep">/</span>
+      <span class="here">Rebo 星際探險隊</span>
+    </div>
+
+    <h1 style="font-size: 28px; font-weight: 600">Rebo 星際探險隊</h1>
+  </header>
+
+  <!-- GALLERY -->
+  <main class="gallery">
+
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-0.webp" alt="Rebo 星際探險隊 介紹 0">
+    </div>
+    <div style="height:12px"></div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-1.webp" alt="Rebo 星際探險隊 介紹 1">
+    </div>
+    <p class="section-label">活動宣傳視覺設計</p>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-2.webp" alt="Rebo 星際探險隊 介紹 2">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-3.webp" alt="Rebo 星際探險隊 介紹 3">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-4.webp" alt="Rebo 星際探險隊 介紹 4">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-5.webp" alt="Rebo 星際探險隊 介紹 5">
+    </div>
+    <p class="section-label">活動集章設計</p>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-6.webp" alt="Rebo 星際探險隊 介紹 6">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-7.webp" alt="Rebo 星際探險隊 介紹 7">
+    </div>
+    <p class="section-label">IP 人偶及 FRP 公仔設計</p>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-8.webp" alt="Rebo 星際探險隊 介紹 8">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-9.webp" alt="Rebo 星際探險隊 介紹 9">
+    </div>
+    <p class="section-label">IP 周邊商品設計</p>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-10.webp" alt="Rebo 星際探險隊 介紹 10">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-11.webp" alt="Rebo 星際探險隊 介紹 11">
+    </div>
+    <p class="section-label">社群漫畫連載製作</p>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-12-1.webp" alt="Rebo 星際探險隊 介紹 12-1">
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-12.webp" alt="Rebo 星際探險隊 介紹 12">
+    </div>
+
+    <p class="section-label">角色設計三視圖製作</p>
+    <!-- 輪播：13-1 ~ 13-5 -->
+    <div class="carousel" id="carousel-13">
+      <div class="carousel-track" id="carousel-13-track">
+        <img src="../assets/projects/rebo/rebo-13-1.webp" alt="Rebo 星際探險隊 介紹 13-1">
+        <img src="../assets/projects/rebo/rebo-13-2.webp" alt="Rebo 星際探險隊 介紹 13-2">
+        <img src="../assets/projects/rebo/rebo-13-3.webp" alt="Rebo 星際探險隊 介紹 13-3">
+        <img src="../assets/projects/rebo/rebo-13-4.webp" alt="Rebo 星際探險隊 介紹 13-4">
+        <img src="../assets/projects/rebo/rebo-13-5.webp" alt="Rebo 星際探險隊 介紹 13-5">
+      </div>
+      <button class="carousel-btn prev" aria-label="上一張" onclick="carouselMove('carousel-13', -1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="carousel-btn next" aria-label="下一張" onclick="carouselMove('carousel-13', 1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="carousel-dots" id="carousel-13-dots">
+        <button class="carousel-dot active" onclick="carouselGo('carousel-13', 0)" aria-label="第 1 張"></button>
+        <button class="carousel-dot" onclick="carouselGo('carousel-13', 1)" aria-label="第 2 張"></button>
+        <button class="carousel-dot" onclick="carouselGo('carousel-13', 2)" aria-label="第 3 張"></button>
+        <button class="carousel-dot" onclick="carouselGo('carousel-13', 3)" aria-label="第 4 張"></button>
+        <button class="carousel-dot" onclick="carouselGo('carousel-13', 4)" aria-label="第 5 張"></button>
+      </div>
+    </div>
+    <div class="shot">
+      <img src="../assets/projects/rebo/rebo-14.webp" alt="Rebo 星際探險隊 介紹 14">
+    </div>
+
+    <!-- 專案資訊列 -->
+    <div class="proj-info">
+      <div class="info-col">
+        <h4>專案細節</h4>
+        <p class="info-row"><span>作品 /</span>Rebo 星際探險隊</p>
+        <p class="info-row"><span>分類 /</span>展覽主視覺設計</p>
+        <p class="info-row"><span>地點 /</span>台灣 台北市</p>
+        <p class="info-row"><span>年份 /</span>2019</p>
+      </div>
+      <div class="info-col">
+        <h4>負責項目</h4>
+        <p class="info-row">展覽主視覺設計</p>
+        <p class="info-row">角色插圖設計</p>
+        <p class="info-row">展場視覺規劃</p>
+      </div>
+      <div class="info-col">
+        <h4>工具使用</h4>
+        <p class="info-row">無 AI 工具介入</p>
+        <div class="tool-icons">
+          <img class="tool-icon" src="../assets/tools/illustrator.webp" alt="Illustrator">
+          <img class="tool-icon" src="../assets/tools/photoshop.webp" alt="Photoshop">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PROJECT FOOTER NAV -->
+  <div class="proj-foot-nav">
+    <a class="back-link" href="../work.html">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      返回所有作品
+    </a>
+  </div>
+
+  <!-- FOOTER CTA -->
+  <footer class="foot">
+    <div class="foot-inner">
+      <h2>有合作想法？<br>讓我們<em>聊聊</em>。</h2>
+      <a class="foot-btn" href="../index.html#contact">
+        Get in touch
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const navEl = document.querySelector('nav.top');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+      progress.style.width = pct + '%';
+      navEl.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ── CAROUSEL ── */
+    const carouselState = {};
+
+    function carouselInit(id, total) {
+      carouselState[id] = { current: 0, total };
+    }
+
+    function carouselGo(id, index) {
+      const state = carouselState[id];
+      if (!state) return;
+      state.current = index;
+      const track = document.getElementById(id + '-track');
+      track.style.transform = `translateX(-${index * 100}%)`;
+      const dots = document.querySelectorAll('#' + id + '-dots .carousel-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    function carouselMove(id, dir) {
+      const state = carouselState[id];
+      if (!state) return;
+      const next = (state.current + dir + state.total) % state.total;
+      carouselGo(id, next);
+    }
+
+    carouselInit('carousel-13', 5);
+
+    /* autoplay */
+    let autoplayTimer = setInterval(() => carouselMove('carousel-13', 1), 3000);
+    const carouselEl = document.getElementById('carousel-13');
+    const resetAutoplay = () => { clearInterval(autoplayTimer); autoplayTimer = setInterval(() => carouselMove('carousel-13', 1), 3000); };
+    carouselEl.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+    carouselEl.addEventListener('mouseleave', () => { autoplayTimer = setInterval(() => carouselMove('carousel-13', 1), 3000); });
+
+    /* swipe support */
+    (function() {
+      let startX = 0;
+      carouselEl.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      carouselEl.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) { carouselMove('carousel-13', dx < 0 ? 1 : -1); resetAutoplay(); }
+      }, { passive: true });
+    })();
+  </script>
+<script src="../scripts/contact-modal.js"></script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Time Lock 美白牙膏形象翻新設計廣告影片 — Hedy's Portfolio</title>
+  <link rel="icon" type="image/png" href="../assets/ui/favicon.png">
+  <style>
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #f1efea;
+      color: #363636;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── SCROLL PROGRESS ── */
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: #A0B297;
+      z-index: 200;
+      transition: width 0.08s linear;
+    }
+
+    /* ── BACKGROUND BLOBS ── */
+    .bg-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(20px);
+    }
+    .blob-green {
+      width: 720px; height: 720px;
+      left: -180px; top: -120px;
+      background: radial-gradient(circle, rgba(168, 213, 140, 0.45) 0%, transparent 65%);
+      animation: drift-green 22s ease-in-out infinite;
+    }
+    .blob-peach {
+      width: 620px; height: 620px;
+      right: -120px; top: 6vh;
+      background: radial-gradient(circle, rgba(255, 195, 165, 0.4) 0%, transparent 65%);
+      animation: drift-peach 26s ease-in-out infinite;
+    }
+    @keyframes drift-green {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.06); }
+    }
+    @keyframes drift-peach {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-40px, 50px) scale(1.08); }
+    }
+
+    /* ── NAV ── */
+    nav.top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 22px 24px;
+      background: rgba(241, 239, 234, 0);
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    }
+    nav.top.scrolled {
+      background: rgba(241, 239, 234, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    nav.top a {
+      font-weight: 600;
+      font-size: 17px;
+      color: #363636;
+      transition: opacity 0.2s;
+    }
+    nav.top a:hover { opacity: 0.55; }
+    nav.top a.active { opacity: 0.45; }
+
+    /* ── PROJECT HEADER ── */
+    .proj-header {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 82px 300px 8px;
+    }
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #88857f;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .crumbs a { transition: color 0.2s; }
+    .crumbs a:hover { color: #363636; }
+    .crumbs .sep { opacity: 0.5; }
+    .crumbs .here { color: #363636; }
+
+    .proj-header h1 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 6vw, 68px);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      background: linear-gradient(64.94deg, #111011 8.82%, rgba(17,16,17,0.55) 97.41%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 4px 300px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .shot {
+      position: relative;
+      border-radius: 0px;
+      overflow: hidden;
+      background: #e7e5dc;
+      box-shadow: 0 24px 60px -28px rgba(54,54,54,0.32);
+    }
+    .shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── DESCRIPTION TEXT ── */
+    .proj-desc {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .desc-intro {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.8;
+      color: #2a2a2a;
+    }
+    .desc-intro em {
+      font-style: normal;
+      color: #A0B297;
+    }
+
+    .desc-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .desc-block {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .desc-dot {
+      flex-shrink: 0;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #A0B297;
+      margin-top: 10px;
+    }
+    .desc-block p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #4a4845;
+    }
+    .desc-block p strong {
+      font-weight: 700;
+      color: #2a2a2a;
+    }
+
+    /* ── PROJECT INFO ROW ── */
+    .proj-info {
+      display: flex;
+      gap: 92px;
+      padding-top: 48px;
+    }
+    .info-col { display: flex; flex-direction: column; gap: 6px; }
+    .info-col h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a1b;
+      margin-bottom: 10px;
+    }
+    .info-row {
+      font-size: 14px;
+      color: #5c5a55;
+      line-height: 1.6;
+    }
+    .info-row span {
+      color: #88857f;
+      margin-right: 4px;
+    }
+    .tool-icons {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    /* ── VIDEO ── */
+    .shot video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── PROJECT FOOTER NAV ── */
+    .proj-foot-nav {
+      position: relative;
+      z-index: 1;
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 300px 80px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #363636;
+      padding: 14px 24px;
+      border: 1px solid rgba(54,54,54,0.22);
+      border-radius: 100px;
+      transition: gap 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .back-link:hover {
+      gap: 14px;
+      background: rgba(54,54,54,0.04);
+      border-color: rgba(54,54,54,0.4);
+    }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER CTA ── */
+    .foot {
+      position: relative;
+      z-index: 2;
+      background: #1d1c1d;
+      color: #f1efea;
+      padding: 100px 8%;
+    }
+    .foot-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .foot-inner h2 {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .foot-inner h2 em {
+      font-style: normal;
+      color: #A0B297;
+    }
+    .foot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1efea;
+      color: #1d1c1d;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 17px 28px;
+      border-radius: 100px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .foot-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .foot-btn svg { width: 18px; height: 18px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob-green, .blob-peach { animation: none !important; }
+    }
+
+    /* ── RWD ── */
+    @media (min-width: 1728px) {
+      .proj-header { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .gallery { max-width: 1128px; padding-left: 0; padding-right: 0; }
+      .proj-foot-nav { max-width: 1128px; padding-left: 0; padding-right: 0; }
+    }
+    @media (max-width: 1280px) {
+      .proj-header { padding-left: 64px; padding-right: 64px; }
+      .gallery { padding-left: 64px; padding-right: 64px; }
+      .proj-foot-nav { padding-left: 64px; padding-right: 64px; }
+    }
+    @media (max-width: 760px) {
+      nav.top { gap: 20px; padding: 16px 20px; }
+      nav.top a { font-size: 15px; }
+      .proj-header { padding: 110px 22px 20px; }
+      .gallery { padding: 0 0 80px; gap: 18px; }
+      .shot { border-radius: 0px; }
+      .proj-desc { padding: 28px 24px; }
+      .desc-intro { font-size: 16px; }
+      .proj-foot-nav { padding: 0 22px 64px; }
+      .foot-inner { justify-content: center; text-align: center; }
+      .proj-info { margin-top: 40px; padding: 0 16px; flex-wrap: wrap; gap: 32px 48px; }
+      .proj-info .info-col:last-child { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="progress" id="progress"></div>
+
+  <!-- BACKGROUND BLOBS -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-green"></div>
+    <div class="blob blob-peach"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="top">
+    <a href="../index.html#home">Home</a>
+    <a href="../index.html#about">About</a>
+    <a href="../index.html" class="active">Works</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+
+  <!-- PROJECT HEADER -->
+  <header class="proj-header">
+    <div class="crumbs">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="../work.html">Works</a>
+      <span class="sep">/</span>
+      <span class="here">Time Lock</span>
+    </div>
+
+    <h1 style="font-size: 28px; font-weight: 600">Time Lock 美白牙膏形象翻新設計廣告影片</h1>
+  </header>
+
+  <!-- GALLERY -->
+  <main class="gallery">
+    <!-- 影片 -->
+    <div class="shot">
+      <video controls autoplay muted loop playsinline>
+        <source src="../assets/projects/timelock/timelock.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- 內文 -->
+    <div class="proj-desc">
+      <p class="desc-intro">
+        以 <em>「潔白、純淨、現代感」</em> 為核心，重新設計美白牙膏品牌的視覺形象影片。
+      </p>
+      <div class="desc-blocks">
+        <div class="desc-block">
+          <div class="desc-dot"></div>
+          <p>保留產品<strong>「牙齒亮白」</strong>的功能訴求，透過更簡潔且具有空間感的視覺語言，建立高質感、年輕化的品牌印象。</p>
+        </div>
+        <div class="desc-block">
+          <div class="desc-dot"></div>
+          <p>美術風格採用<strong>極簡幾何場景</strong>與<strong>低彩度空間設計</strong>，以局部亮色點綴，用黃色光束象徵亮白效果與產品能量，讓功能訴求更具視覺記憶點。</p>
+        </div>
+        <div class="desc-block">
+          <div class="desc-dot"></div>
+          <p>鏡頭語言透過<strong>產品特寫、材質層次與動態構圖</strong>，強化 premium 感與現代生活風格，提升整體品牌溝通的一致性與吸引力。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 靜態圖 -->
+    <div class="shot">
+      <img src="../assets/projects/timelock/tspa-3d.webp" alt="Time Lock TSPA 3D">
+    </div>
+
+    <!-- 專案資訊列 -->
+    <div class="proj-info">
+      <div class="info-col">
+        <h4>專案細節</h4>
+        <p class="info-row"><span>產品 /</span>TimeLock 美白牙膏</p>
+        <p class="info-row"><span>分類 /</span>3D 動畫影片</p>
+        <p class="info-row"><span>地點 /</span>台灣 台北市</p>
+        <p class="info-row"><span>年份 /</span>2021</p>
+      </div>
+      <div class="info-col">
+        <h4>負責項目</h4>
+        <p class="info-row">3D 建模</p>
+        <p class="info-row">場景打光</p>
+        <p class="info-row">材質渲染</p>
+        <p class="info-row">影音剪輯</p>
+      </div>
+      <div class="info-col">
+        <h4>工具使用</h4>
+        <p class="info-row">無 AI 工具介入</p>
+        <div class="tool-icons">
+          <img class="tool-icon" src="../assets/tools/maya.webp" alt="Maya">
+          <img class="tool-icon" src="../assets/tools/after-effects.webp" alt="After Effects">
+          <img class="tool-icon" src="../assets/tools/photoshop.webp" alt="Photoshop">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PROJECT FOOTER NAV -->
+  <div class="proj-foot-nav">
+    <a class="back-link" href="../work.html">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      返回所有作品
+    </a>
+  </div>
+
+  <!-- FOOTER CTA -->
+  <footer class="foot">
+    <div class="foot-inner">
+      <h2>有合作想法？<br>讓我們<em>聊聊</em>。</h2>
+      <a class="foot-btn" href="../index.html#contact">
+        Get in touch
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const navEl = document.querySelector('nav.top');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+      progress.style.width = pct + '%';
+      navEl.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+<script src="../scripts/contact-modal.js"></script>
+</body>
+</html>

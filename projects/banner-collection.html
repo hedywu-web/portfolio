@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Banner 設計合集 — Hedy's Portfolio</title>
+  <link rel="icon" type="image/png" href="../assets/ui/favicon.png">
+  <style>
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Clash Display'; src: url('../assets/fonts/ClashDisplay-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #f1efea; color: #363636; font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: #E8A87C; z-index: 200; transition: width 0.08s linear; }
+    .bg-blobs { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(20px); }
+    .blob-warm { width: 720px; height: 720px; left: -180px; top: -120px; background: radial-gradient(circle, rgba(255,195,140,0.45) 0%, transparent 65%); animation: drift-warm 22s ease-in-out infinite; }
+    .blob-red { width: 620px; height: 620px; right: -120px; top: 6vh; background: radial-gradient(circle, rgba(220,130,100,0.35) 0%, transparent 65%); animation: drift-red 26s ease-in-out infinite; }
+    @keyframes drift-warm { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,40px) scale(1.06);} }
+    @keyframes drift-red { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-40px,50px) scale(1.08);} }
+    nav.top { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; gap: 32px; padding: 22px 24px; background: rgba(241,239,234,0); backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease; }
+    nav.top.scrolled { background: rgba(241,239,234,0.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    nav.top a { font-weight: 600; font-size: 17px; color: #363636; transition: opacity 0.2s; }
+    nav.top a:hover { opacity: 0.55; }
+    nav.top a.active { opacity: 0.45; }
+    .proj-header { position: relative; z-index: 1; max-width: none; margin: 0 auto; padding: 82px 300px 28px; }
+    .crumbs { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #88857f; letter-spacing: 0.02em; margin-bottom: 20px; }
+    .crumbs a { transition: color 0.2s; }
+    .crumbs a:hover { color: #363636; }
+    .crumbs .sep { opacity: 0.5; }
+    .crumbs .here { color: #363636; }
+    .proj-header h1 { font-family: 'Clash Display','Plus Jakarta Sans',sans-serif; font-size: clamp(32px,6vw,68px); font-weight: 500; line-height: 1.02; letter-spacing: -0.01em; background: linear-gradient(64.94deg,#111011 8.82%,rgba(17,16,17,0.55) 97.41%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; }
+
+    /* ─── 2-row horizontal flex gallery ─── */
+    .h-outer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    /* single scrollable container for both rows */
+    .h-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding-bottom: 4px;
+    }
+    .h-scroll::-webkit-scrollbar { display: none; }
+
+    /* each row is a horizontal flex strip */
+    .h-row {
+      display: flex;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+
+    .h-row img {
+      display: block;
+      height: 215px;
+      width: auto;
+      max-width: none;
+      flex-shrink: 0;
+      cursor: zoom-in;
+      transition: opacity 0.2s;
+    }
+    .h-row img:hover { opacity: 0.84; }
+
+    /* arrow buttons */
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(241,239,234,0.92);
+      border: 1px solid rgba(54,54,54,0.12);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 18px rgba(54,54,54,0.14);
+      transition: background 0.2s, opacity 0.25s, box-shadow 0.2s;
+    }
+    .arrow-btn:hover { background: #fff; box-shadow: 0 6px 24px rgba(54,54,54,0.22); }
+    .arrow-btn.hidden { opacity: 0; pointer-events: none; }
+    .arrow-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .arrow-prev { left: 14px; }
+    .arrow-next { right: 14px; }
+
+    /* lightbox */
+    .lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 999; justify-content: center; align-items: center; cursor: zoom-out; }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-overlay img { max-width: 92vw; max-height: 92vh; object-fit: contain; border-radius: 4px; box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
+
+    .gallery { position: relative; z-index: 1; max-width: none; margin: 0 auto; padding: 4px 300px 60px; display: flex; flex-direction: column; gap: 28px; }
+    .proj-info { display: flex; gap: 92px; padding-top: 96px; }
+    .info-col { display: flex; flex-direction: column; gap: 6px; }
+    .info-col h4 { font-size: 15px; font-weight: 700; color: #1a1a1b; margin-bottom: 10px; }
+    .info-row { font-size: 14px; color: #5c5a55; line-height: 1.6; }
+    .info-row span { color: #88857f; margin-right: 4px; }
+    .tool-icons { display: flex; gap: 12px; margin-top: 10px; }
+    .tool-icon { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; }
+    .proj-foot-nav { position: relative; z-index: 1; max-width: none; margin: 0 auto; padding: 0 300px 80px; }
+    .back-link { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #363636; padding: 14px 24px; border: 1px solid rgba(54,54,54,0.22); border-radius: 100px; transition: gap 0.2s, background 0.2s, border-color 0.2s; }
+    .back-link:hover { gap: 14px; background: rgba(54,54,54,0.04); border-color: rgba(54,54,54,0.4); }
+    .back-link svg { width: 16px; height: 16px; }
+    .foot { position: relative; z-index: 2; background: #1d1c1d; color: #f1efea; padding: 100px 8%; }
+    .foot-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .foot-inner h2 { font-family: 'Clash Display','Plus Jakarta Sans',sans-serif; font-size: clamp(32px,4vw,52px); font-weight: 500; line-height: 1.05; letter-spacing: -0.01em; }
+    .foot-inner h2 em { font-style: normal; color: #E8A87C; }
+    .foot-btn { display: inline-flex; align-items: center; gap: 10px; background: #f1efea; color: #1d1c1d; font-weight: 700; font-size: 17px; padding: 17px 28px; border-radius: 100px; transition: opacity 0.2s, transform 0.2s; }
+    .foot-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .foot-btn svg { width: 18px; height: 18px; }
+    @media (prefers-reduced-motion: reduce) { .blob-warm,.blob-red { animation: none !important; } }
+    @media (min-width: 1728px) { .proj-header,.gallery,.proj-foot-nav { max-width: 1128px; padding-left: 0; padding-right: 0; } }
+    @media (max-width: 1280px) { .proj-header,.gallery,.proj-foot-nav { padding-left: 64px; padding-right: 64px; } }
+    @media (max-width: 760px) {
+      nav.top { gap: 20px; padding: 16px 20px; } nav.top a { font-size: 15px; }
+      .proj-header { padding: 110px 22px 20px; }
+      .gallery { padding: 0 0 80px; gap: 18px; }
+      .proj-foot-nav { padding: 0 22px 64px; }
+      .foot-inner { justify-content: center; text-align: center; }
+      .h-row img { height: 140px; }
+      .proj-info { margin-top: 40px; padding: 0 16px; flex-wrap: wrap; gap: 32px 48px; }
+      .proj-info .info-col:last-child { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-warm"></div>
+    <div class="blob blob-red"></div>
+  </div>
+
+  <nav class="top">
+    <a href="../index.html#home">Home</a>
+    <a href="../index.html#about">About</a>
+    <a href="../work.html" class="active">Works</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+
+  <header class="proj-header">
+    <div class="crumbs">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="../work.html">Works</a>
+      <span class="sep">/</span>
+      <span class="here">Banner 設計合集</span>
+    </div>
+    <h1 style="font-size: 28px; font-weight: 600">Banner 設計合集</h1>
+  </header>
+
+  <!--
+    Grid: 2 rows × auto columns, grid-auto-flow: column dense
+    span2 class  → portrait/square images that span both rows (aspect ratio < 1.2)
+    順序安排讓 span2 與橫向圖交錯，製造視覺律動
+  -->
+  <div class="h-outer" id="hOuter">
+    <div class="h-scroll" id="hScroll">
+
+      <!-- top row: wide → square → super-wide → portrait → wide → square → wide → landscape -->
+      <div class="h-row">
+        <img src="../assets/projects/banner/2942b37a-af8b-4569-bc1a-cba14aa336de.webp" alt="Banner">
+        <img src="../assets/projects/banner/40109805-207f-4b81-8d79-10296967ebbb.webp" alt="Banner">
+        <img src="../assets/projects/banner/d3dbb3cc-6556-453a-8651-b6349b88a3aa.webp" alt="Banner">
+        <img src="../assets/projects/banner/af84fa5e-97c9-4412-a6ad-2617cc430ba1.webp" alt="Banner">
+        <img src="../assets/projects/banner/無料xx限定.webp" alt="Banner">
+        <img src="../assets/projects/banner/a03bfb_1799a12f80da49148f49b55206bc8cdb~mv2%20%281%29.webp" alt="Banner">
+        <img src="../assets/projects/banner/f5b65c96-82bb-4427-9576-a8089999b7db.webp" alt="Banner">
+        <img src="../assets/projects/banner/b4f84eaa-e3d9-4b1a-8845-3db98ff07025.webp" alt="Banner">
+      </div>
+
+      <!-- bottom row: landscape → square → wide → square → wide → square → wide → landscape -->
+      <div class="h-row">
+        <img src="../assets/projects/banner/6f7a27b4-e008-4886-8dc8-af5218536c18.webp" alt="Banner">
+        <img src="../assets/projects/banner/a03bfb_5a829afffbda47dea2e0c66dc34a7632~mv2.webp" alt="Banner">
+        <img src="../assets/projects/banner/工作區域%205.webp" alt="Banner">
+        <img src="../assets/projects/banner/a03bfb_898f4eb27b0f442a81cff5411f84bab4~mv2.webp" alt="Banner">
+        <img src="../assets/projects/banner/工作區域%205%20複本.webp" alt="Banner">
+        <img src="../assets/projects/banner/a03bfb_a2ea237de1404dcf8ee7f66792d35430~mv2.webp" alt="Banner">
+        <img src="../assets/projects/banner/工作區域%2013.webp" alt="Banner">
+        <img src="../assets/projects/banner/工作區域%207.webp" alt="Banner">
+      </div>
+
+    </div>
+
+    <button class="arrow-btn arrow-prev hidden" id="arrowPrev" aria-label="往左">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="arrow-btn arrow-next" id="arrowNext" aria-label="往右">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="lightbox-overlay" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <main class="gallery">
+    <div class="proj-info">
+      <div class="info-col">
+        <h4>專案細節</h4>
+        <p class="info-row"><span>作品 /</span>Banner 設計合集</p>
+        <p class="info-row"><span>分類 /</span>廣告設計</p>
+        <p class="info-row"><span>地點 /</span>台灣 台北市</p>
+        <p class="info-row"><span>應用 /</span>社群媒體 / 網頁 / in-App</p>
+      </div>
+      <div class="info-col">
+        <h4>負責項目</h4>
+        <p class="info-row">Banner 視覺設計</p>
+        <p class="info-row">多尺寸版本製作</p>
+        <p class="info-row">品牌規範執行</p>
+      </div>
+      <div class="info-col">
+        <h4>工具使用</h4>
+        <div class="tool-icons">
+          <img class="tool-icon" src="../assets/tools/illustrator.webp" alt="Illustrator">
+          <img class="tool-icon" src="../assets/tools/photoshop.webp" alt="Photoshop">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="proj-foot-nav">
+    <a class="back-link" href="../work.html">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="#363636" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      返回所有作品
+    </a>
+  </div>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <h2>有合作想法？<br>讓我們<em>聊聊</em>。</h2>
+      <a class="foot-btn" href="../index.html#contact">
+        Get in touch
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const scroll   = document.getElementById('hScroll');
+      const btnPrev  = document.getElementById('arrowPrev');
+      const btnNext  = document.getElementById('arrowNext');
+
+      function updateArrows() {
+        btnPrev.classList.toggle('hidden', scroll.scrollLeft <= 4);
+        btnNext.classList.toggle('hidden', scroll.scrollLeft >= scroll.scrollWidth - scroll.clientWidth - 4);
+      }
+
+      scroll.addEventListener('scroll', updateArrows, { passive: true });
+      window.addEventListener('load', updateArrows);
+      updateArrows();
+
+      const STEP = () => scroll.clientWidth * 0.8;
+      btnPrev.addEventListener('click', () => scroll.scrollBy({ left: -STEP(), behavior: 'smooth' }));
+      btnNext.addEventListener('click', () => scroll.scrollBy({ left:  STEP(), behavior: 'smooth' }));
+
+      // lightbox
+      const lb    = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      document.querySelectorAll('.h-row img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('open'); });
+      });
+      lb.addEventListener('click', () => lb.classList.remove('open'));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('open'); });
+    })();
+  </script>
+
+  <script>
+    const progress = document.getElementById('progress');
+    const navEl = document.querySelector('nav.top');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+      progress.style.width = pct + '%';
+      navEl.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+  <script src="../scripts/contact-modal.js"></script>
+</body>
+</html>
