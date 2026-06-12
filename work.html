@@ -191,6 +191,43 @@
       opacity: 1;
       transform: translateX(0);
     }
+    .featured-item {
+      grid-template-columns: 32px 1fr auto;
+      cursor: pointer;
+    }
+    .featured-item:hover { transform: none; }
+    .featured-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .featured-toggle input { display: none; }
+    .toggle-track {
+      width: 32px;
+      height: 18px;
+      background: rgba(54,54,54,0.15);
+      border-radius: 9px;
+      position: relative;
+      transition: background 0.25s;
+    }
+    .featured-toggle input:checked ~ .toggle-track { background: #C8A96E; }
+    .toggle-thumb {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 14px; height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.25s;
+    }
+    .featured-toggle input:checked ~ .toggle-track .toggle-thumb {
+      transform: translateX(14px);
+    }
+    /* ── Featured-only mode ── */
+    #featured { display: none; }
+    body.featured-only #featured { display: block; }
+    body.featured-only .cat-hero,
+    body.featured-only .sub-section:not(#featured) { display: none; }
 
     /* Sub-section quick jump (under main list) */
     .side-sub {
@@ -362,15 +399,15 @@
           rgba(54,54,54,0.04) 0 12px,
           rgba(54,54,54,0.08) 12px 24px);
     }
-    .work-img img {
+    .work-img img:not(.work-badge) {
       width: 100%;
       height: 100%;
       object-fit: cover;
       opacity: 0;
       transition: opacity 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .work-img.loaded img { opacity: 1; }
-    .work:hover .work-img img { transform: scale(1.045); }
+    .work-img.loaded img:not(.work-badge) { opacity: 1; }
+    .work:hover .work-img img:not(.work-badge) { transform: scale(1.045); }
     @keyframes skeleton-shimmer {
       0%   { background-position: -200% 0; }
       100% { background-position:  200% 0; }
@@ -443,6 +480,16 @@
       color: #88857f;
     }
     .work-meta .dot { opacity: 0.5; }
+
+    /* ── WORK BADGE ── */
+    .work-badge {
+      position: absolute;
+      top: 0; right: 16px;
+      width: 38px;
+      display: block;
+      z-index: 2;
+      pointer-events: none;
+    }
 
     /* ── VIDEO WORK ITEM ── */
     .work-img video {
@@ -568,11 +615,14 @@
     <!-- LEFT SIDE NAV -->
     <aside class="side">
       <div class="side-list">
-        <a class="side-item active" href="#featured" style="display:none">
+        <label class="side-item featured-item" for="featured-toggle">
           <span class="idx star-idx"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
-          <span class="name">精選作品</span>
-          <span class="arrow">→</span>
-        </a>
+          <span class="name">精選</span>
+          <span class="featured-toggle">
+            <input type="checkbox" id="featured-toggle">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </span>
+        </label>
         <a class="side-item" href="#uiux">
           <span class="idx">01</span>
           <span class="name">UI/UX Design</span>
@@ -600,15 +650,16 @@
     <main class="main">
 
       <!-- Featured Works -->
-      <section class="sub-section" id="featured" style="display:none">
+      <section class="sub-section" id="featured">
         <div class="sub-head reveal">
           <div class="sub-head-left">
-            <h2 class="sub-title">精選作品</h2>
+            <h2 class="sub-title">精選</h2>
+            <span class="sub-count">05 Projects</span>
           </div>
         </div>
         <div class="works">
           <a class="work reveal" href="projects/mixerbox-ai.html">
-            <div class="work-img"><img src="assets/thumbnails/mixerbox-ai.webp" alt="MixerBox AI App"></div>
+            <div class="work-img"><img src="assets/thumbnails/mixerbox-ai.webp" alt="MixerBox AI App"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">MixerBox AI App</h3>
@@ -616,11 +667,27 @@
             </div>
           </a>
           <a class="work reveal" href="projects/baplcp.html">
-            <div class="work-img"><img src="assets/thumbnails/baplcp-app.webp" alt="排球報名系統"></div>
+            <div class="work-img"><img src="assets/thumbnails/baplcp-app.webp" alt="排球報名系統"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">排球報名系統</h3>
               <div class="work-meta"><span>BAPLCP</span><span class="dot">•</span><span>2026</span></div>
+            </div>
+          </a>
+          <a class="work reveal" href="projects/rebo.html">
+            <div class="work-img"><img src="assets/thumbnails/rebo-exhibition.webp" alt="Rebo 星際探險隊"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">Rebo 星際探險隊</h3>
+              <div class="work-meta"><span>展覽主視覺設計</span><span class="dot">•</span><span>2019</span></div>
+            </div>
+          </a>
+          <a class="work reveal" href="projects/sales-page.html">
+            <div class="work-img"><img src="assets/thumbnails/sales-page.webp" alt="銷售頁面設計"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
+            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="work-body">
+              <h3 class="work-title">銷售頁面設計</h3>
+              <div class="work-meta"><span class="work-author">多件作品</span><span class="dot">•</span><span>2020</span></div>
             </div>
           </a>
           <a class="work reveal" href="projects/ig-reel.html">
@@ -629,26 +696,11 @@
                      data-src="assets/projects/ig-reel/ig-reel.mp4"
                      muted loop playsinline>
               </video>
+              <img class="work-badge" src="assets/thumbnails/mark.png" alt="精選">
             </div>
             <div class="work-body">
               <h3 class="work-title">社群短影音剪輯</h3>
-              <div class="work-meta"><span>各社群平台</span><span class="dot">•</span><span>2026</span></div>
-            </div>
-          </a>
-          <a class="work reveal" href="projects/rebo.html">
-            <div class="work-img"><img src="assets/thumbnails/rebo-exhibition.webp" alt="Rebo 星際探險隊"></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">Rebo 星際探險隊</h3>
-              <div class="work-meta"><span>展覽主視覺設計</span><span class="dot">•</span><span>2019</span></div>
-            </div>
-          </a>
-          <a class="work reveal" href="projects/banner-collection.html">
-            <div class="work-img"><img src="assets/thumbnails/banner-collection.webp" alt="Banner 設計合集"></div>
-            <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
-            <div class="work-body">
-              <h3 class="work-title">Banner 設計合集</h3>
-              <div class="work-meta"><span>社群媒體/網頁/in-App 廣告設計</span></div>
+              <div class="work-meta"><span class="work-author">各社群平台</span><span class="dot">•</span><span>2026</span></div>
             </div>
           </a>
         </div>
@@ -670,7 +722,7 @@
         </div>
         <div class="works">
           <a class="work reveal" href="projects/mixerbox-ai.html">
-            <div class="work-img"><img src="assets/thumbnails/mixerbox-ai.webp" alt="MixerBox AI App"></div>
+            <div class="work-img"><img src="assets/thumbnails/mixerbox-ai.webp" alt="MixerBox AI App"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">MixerBox AI App</h3>
@@ -678,7 +730,7 @@
             </div>
           </a>
           <a class="work reveal" href="projects/baplcp.html">
-            <div class="work-img"><img src="assets/thumbnails/baplcp-app.webp" alt="排球報名系統"></div>
+            <div class="work-img"><img src="assets/thumbnails/baplcp-app.webp" alt="排球報名系統"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">排球報名系統</h3>
@@ -758,7 +810,7 @@
             </div>
           </a>
           <a class="work reveal" href="projects/sales-page.html">
-            <div class="work-img"><img src="assets/thumbnails/sales-page.webp" alt="銷售頁面設計"></div>
+            <div class="work-img"><img src="assets/thumbnails/sales-page.webp" alt="銷售頁面設計"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">銷售頁面設計</h3>
@@ -866,6 +918,7 @@
                      data-src="assets/projects/ig-reel/ig-reel.mp4"
                      muted loop playsinline>
               </video>
+              <img class="work-badge" src="assets/thumbnails/mark.png" alt="精選">
             </div>
             <div class="work-body">
               <h3 class="work-title">社群短影音剪輯</h3>
@@ -873,7 +926,7 @@
             </div>
           </a>
           <a class="work reveal" href="projects/rebo.html">
-            <div class="work-img"><img src="assets/thumbnails/rebo-exhibition.webp" alt="Rebo 星際探險隊 展覽主視覺設計"></div>
+            <div class="work-img"><img src="assets/thumbnails/rebo-exhibition.webp" alt="Rebo 星際探險隊 展覽主視覺設計"><img class="work-badge" src="assets/thumbnails/mark.png" alt="精選"></div>
             <div class="work-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="#1d1c1d" stroke-width="2" stroke-linecap="round"/></svg></div>
             <div class="work-body">
               <h3 class="work-title">Rebo 星際探險隊</h3>
@@ -1003,6 +1056,22 @@
         }, { threshold: 0.3 });
         playObserver.observe(video);
       }
+    });
+
+    // ── Featured-only toggle ──
+    const featuredToggle = document.getElementById('featured-toggle');
+    featuredToggle.addEventListener('change', () => {
+      document.body.classList.toggle('featured-only', featuredToggle.checked);
+    });
+
+    // Auto-close featured toggle when clicking other nav items
+    document.querySelectorAll('.side-item[href]').forEach(link => {
+      link.addEventListener('click', () => {
+        if (featuredToggle.checked) {
+          featuredToggle.checked = false;
+          document.body.classList.remove('featured-only');
+        }
+      });
     });
 
     // ── Nav background fade on scroll ──
